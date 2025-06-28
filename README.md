@@ -13,6 +13,9 @@ Other useful features include:
 - SES template **duplication**.
 - Syntax highlighting for the HTML body of your emails.
 - **Send test emails** for your template including adding values for any replacement tags you may have implemented.
+- **Multi-language localization support** with translation variables ({{t.keyName}}).
+- **Auto-translation** using Google Translate API from English to Turkish, Spanish, French, and German.
+- **Language-specific previews** showing how templates will look in each language.
 - Be **notified of any newer versions** of this application to always ensure you have the latest features.
 
 See [installation instructions](#Installation) to get started.
@@ -41,7 +44,18 @@ Create/Update template:
 - git clone this project repo.
 - ```npm install```
 - Ensure 'AWS_PROFILE_NAME' within the **.env file** is set to your desired aws named profile. Also ensure for the named profile chosen that all applicable permissions are granted to allow for creating, retrieving, updating, deleting and sending SES templates.
+- Set up DynamoDB table for translations: ```node scripts/setup-dynamodb.js```
 - ```adonis serve --dev``` will run the application.
+
+### Google Cloud Translation Setup (Optional)
+To enable auto-translation features:
+1. Create a Google Cloud Project and enable the Translation API
+2. Create a service account and download the JSON key file
+3. Set the following environment variables in your .env file:
+   - `GOOGLE_CLOUD_PROJECT_ID=your-project-id`
+   - `GOOGLE_APPLICATION_CREDENTIALS=path/to/your/service-account-key.json`
+
+Without Google Cloud setup, you can still use the localization features by manually entering translations.
 
 ## How to use
 Once installation steps have been followed, navigate to http://127.0.0.1:3333 (host and port can be changed via the .env file if required).

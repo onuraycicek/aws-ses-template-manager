@@ -23,7 +23,7 @@
   <body>
     @!component('components.header')
 
-    <div class="container">
+    <div class="container-fluid">
       <div class="row pt-3">
         <nav aria-label="breadcrumb" class="col">
           <ol class="breadcrumb">
@@ -33,9 +33,72 @@
         </nav>
       </div>
 
-      <div class="row">
-        <div class="col">
-          @!component('components.template-form', id = 'createTemplateForm', ctaText = 'Create')
+      <div class="template-editor-container">
+        <div class="template-form-section">
+          @!component('components.template-form', id = 'createTemplateForm', ctaText = 'Create', languages = languages)
+        </div>
+        
+        <div class="template-preview-sidebar">
+          <div class="preview-container">
+            <div class="preview-header">
+              <h5 class="mb-0">Live Preview</h5>
+            </div>
+            <div class="preview-content">
+              <!-- Preview Language Tabs -->
+              <ul class="nav nav-tabs preview-tabs" id="previewLanguageTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link active" id="template-preview-tab" data-toggle="tab" href="#template-preview-content" role="tab" aria-controls="template-preview-content" aria-selected="true">
+                    Raw Template
+                  </a>
+                </li>
+                @each(language in languages)
+                  <li class="nav-item" role="presentation">
+                    <a class="nav-link" 
+                       id="{{ language.code }}-preview-tab" 
+                       data-toggle="tab" 
+                       href="#{{ language.code }}-preview-content" 
+                       role="tab" 
+                       aria-controls="{{ language.code }}-preview-content" 
+                       aria-selected="false">
+                      {{ language.name }}
+                      @if(language.rtl)
+                        <span class="badge badge-info ml-1" title="Right-to-Left language">RTL</span>
+                      @endif
+                    </a>
+                  </li>
+                @endeach
+              </ul>
+              
+              <!-- Preview Tab Content -->
+              <div class="tab-content" id="previewLanguageTabContent">
+                <div class="tab-pane fade show active" id="template-preview-content" role="tabpanel" aria-labelledby="template-preview-tab">
+                  <div class="preview-section">
+                    <div class="preview-label">Subject:</div>
+                    <div id="templateSubjectPreview" class="preview-subject"></div>
+                  </div>
+                  <div class="preview-section">
+                    <div class="preview-label">HTML Content:</div>
+                    <div id="templatePreview" class="preview-html"></div>
+                  </div>
+                </div>
+                @each(language in languages)
+                  <div class="tab-pane fade" 
+                       id="{{ language.code }}-preview-content" 
+                       role="tabpanel" 
+                       aria-labelledby="{{ language.code }}-preview-tab">
+                    <div class="preview-section">
+                      <div class="preview-label">Subject ({{ language.name }}):</div>
+                      <div id="{{ language.code }}SubjectPreview" class="preview-subject"></div>
+                    </div>
+                    <div class="preview-section">
+                      <div class="preview-label">HTML Content ({{ language.name }}):</div>
+                      <div id="{{ language.code }}Preview" class="preview-html"></div>
+                    </div>
+                  </div>
+                @endeach
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

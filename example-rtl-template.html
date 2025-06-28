@@ -1,0 +1,36 @@
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <h1>{{t.welcome_title}}</h1>
+  
+  <p>{{t.greeting_message}}</p>
+  
+  {{#if t.is_rtl}}
+  <div style="background-color: #e8f5e8; padding: 15px; margin: 20px 0; border-radius: 5px; direction: rtl; text-align: right;">
+    <p><strong>{{t.rtl_info_label}}:</strong> {{t.rtl_info_message}}</p>
+    <p><small>RTL Language Detected: {{t.is_rtl}}</small></p>
+  </div>
+  {{else}}
+  <div style="background-color: #f0f0f0; padding: 15px; margin: 20px 0; border-radius: 5px;">
+    <p><strong>{{t.info_label}}:</strong> {{t.info_message}}</p>
+    <p><small>LTR Language - RTL: {{t.is_rtl}}</small></p>
+  </div>
+  {{/if}}
+  
+  <table style="width: 100%; border-collapse: collapse;">
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 10px;">{{t.table_header_1}}</td>
+      <td style="border: 1px solid #ddd; padding: 10px;">{{t.table_header_2}}</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 10px;">{{t.table_data_1}}</td>
+      <td style="border: 1px solid #ddd; padding: 10px;">{{t.table_data_2}}</td>
+    </tr>
+  </table>
+  
+  <div style="text-align: center; margin: 30px 0;">
+    <a href="#" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+      {{t.button_text}}
+    </a>
+  </div>
+  
+  <p style="font-size: 12px; color: #666;">{{t.footer_text}}</p>
+</div> 

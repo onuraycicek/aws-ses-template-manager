@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node ace test"
+    "test": "node ace test",
+    "setup-dynamodb": "node scripts/setup-dynamodb.js"
   },
   "keywords": [
     "adonisjs",
@@ -21,6 +22,7 @@
     "@adonisjs/fold": "^4.0.9",
     "@adonisjs/framework": "^5.0.9",
     "@adonisjs/ignitor": "^2.0.8",
+    "@google-cloud/translate": "^9.1.0",
     "adonis-throttle": "^2.3.6",
     "aws-sdk": "^2.742.0"
   },

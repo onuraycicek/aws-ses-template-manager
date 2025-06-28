@@ -32,3 +32,130 @@
 .col-form-label {
   overflow-wrap: break-word;
 }
+
+/* Sticky Preview Sidebar */
+.template-editor-container {
+  display: flex;
+  gap: 20px;
+  min-height: 100vh;
+}
+
+.template-form-section {
+  flex: 1;
+  min-width: 0; /* Allows flex item to shrink below content size */
+}
+
+.template-preview-sidebar {
+  flex: 0 0 45%; /* Fixed width, no grow/shrink */
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.preview-container {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.preview-header {
+  background: #f8f9fa;
+  padding: 15px 20px;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 8px 8px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.preview-content {
+  padding: 20px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+.preview-tabs {
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 15px;
+}
+
+.preview-tabs .nav-link {
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: #6c757d;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+}
+
+.preview-tabs .nav-link.active {
+  color: #007bff;
+  border-bottom-color: #007bff;
+  background: none;
+}
+
+.preview-section {
+  margin-bottom: 20px;
+}
+
+.preview-section:last-child {
+  margin-bottom: 0;
+}
+
+.preview-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.preview-subject {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #495057;
+  word-break: break-word;
+}
+
+.preview-html {
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  min-height: 200px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.preview-html iframe {
+  width: 100%;
+  border: none;
+  min-height: 200px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .template-preview-sidebar {
+    flex: 0 0 40%;
+  }
+}
+
+@media (max-width: 992px) {
+  .template-editor-container {
+    flex-direction: column;
+  }
+  
+  .template-preview-sidebar {
+    position: static;
+    flex: none;
+    max-height: none;
+    order: -1; /* Move preview to top on mobile */
+  }
+  
+  .preview-content {
+    max-height: 400px;
+  }
+}
