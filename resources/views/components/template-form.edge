@@ -78,6 +78,11 @@
     <small class="form-text text-muted">Editor performance may be degraded for large documents when this option is selected.</small>
   </div>
   <div class="form-group">
+    <label for="enableRTLWrapper">Automatically wrap content with RTL-compatible HTML structure</label>
+    <input type="checkbox" id="enableRTLWrapper" checked>
+    <small class="form-text text-muted">When enabled, your body content will be automatically wrapped with proper HTML structure including RTL support for Arabic and Hebrew. Disable this if you want to write complete HTML manually.</small>
+  </div>
+  <div class="form-group">
     <div id="errContainer" class="text-danger mb-2 d-none"></div>
     <a href="/" class="btn btn-secondary">Back</a>
     <button type="submit" class="btn btn-primary" id="saveTemplateCta" disabled>{{ ctaText }}</button>

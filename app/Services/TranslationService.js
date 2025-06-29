@@ -321,7 +321,6 @@ class TranslationService {
 <html${rtlConditions}>
 <head>
     <meta charset="UTF-8">
-    <title>{{ t.title }}</title>
 </head>
 <body${rtlBodyConditions}>
 ${bodyContent}

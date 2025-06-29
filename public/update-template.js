@@ -36,9 +36,11 @@ $(document).ready(function () {
   const setTemplatePreview = () => {
     const templateHtml = window.codeMirrorEditor.getValue();
     const templateSubject = $('#templateSubject').val();
+    const enableRTLWrapper = $('#enableRTLWrapper').is(':checked');
 
-    // Raw template previews
-    $('#templatePreview').html(templateHtml);
+    // Raw template previews - show wrapper if enabled
+    const displayHtml = enableRTLWrapper ? wrapWithFullHTMLStructure(templateHtml) : templateHtml;
+    $('#templatePreview').html(displayHtml);
     $('#templateSubjectPreview').text(templateSubject);
 
     // Language-specific previews
@@ -50,6 +52,7 @@ $(document).ready(function () {
 
     const templateHtml = window.codeMirrorEditor.getValue();
     const templateSubject = $('#templateSubject').val();
+    const enableRTLWrapper = $('#enableRTLWrapper').is(':checked');
     const languages = window.supportedLanguages.map(l => l.code);
 
     languages.forEach(lang => {
@@ -57,10 +60,17 @@ $(document).ready(function () {
       const translatedHtml = replaceTranslationVariables(templateHtml, translations);
       const translatedSubject = replaceTranslationVariables(templateSubject, translations);
 
-      // Wrap body content with HTML structure for preview
-      const wrappedHtml = wrapWithHTMLStructure(translatedHtml, lang);
+      // Apply wrapper based on checkbox setting
+      let processedHtml;
+      if (enableRTLWrapper) {
+        // Use full HTML structure with RTL support
+        processedHtml = wrapWithFullHTMLStructure(translatedHtml, lang);
+      } else {
+        // Just apply RTL styling for preview if it's RTL language
+        processedHtml = wrapWithHTMLStructure(translatedHtml, lang);
+      }
 
-      $(`#${lang}Preview`).html(wrappedHtml);
+      $(`#${lang}Preview`).html(processedHtml);
       $(`#${lang}SubjectPreview`).text(translatedSubject);
     });
   };
@@ -90,12 +100,29 @@ $(document).ready(function () {
     // For RTL languages, wrap content in a div with RTL styles
     return `<div dir="rtl" style="direction: rtl; text-align: right;">
       <style>
-    
+     
       </style>
       <div class="rtl-preview">
         ${bodyContent}
       </div>
     </div>`;
+  };
+
+  const wrapWithFullHTMLStructure = (bodyContent, languageCode = 'en') => {
+    const isRTL = isRTLLanguage(languageCode);
+    const rtlConditions = isRTL ? ' dir="rtl" style="direction: rtl;"' : '';
+    const rtlBodyConditions = isRTL ? ' dir="rtl" style="margin: 0; padding: 0; direction: rtl; text-align: right;"' : ' style="margin: 0; padding: 0;"';
+
+    return `<!DOCTYPE html>
+<html${rtlConditions}>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t.title }}</title>
+</head>
+<body${rtlBodyConditions}>
+${bodyContent}
+</body>
+</html>`;
   };
 
   window.templateName = templateName; // Store template name for translations
@@ -110,6 +137,13 @@ $(document).ready(function () {
 
     window.codeMirrorEditor.setValue(response.data.HtmlPart ? response.data.HtmlPart : "");
     cmInitialized = true;
+
+    // Detect if template has HTML wrapper (simple heuristic)
+    const htmlContent = response.data.HtmlPart || "";
+    const hasHTMLWrapper = htmlContent.includes('<!DOCTYPE html>') ||
+      htmlContent.includes('<html') ||
+      htmlContent.includes('<body');
+    $('#enableRTLWrapper').prop('checked', !hasHTMLWrapper); // If it has wrapper, disable auto-wrap
 
     $('#updateTemplateForm').removeClass('d-none'); //show the form only when we have pre-populated all inputs
     window.codeMirrorEditor.refresh();  //must be called to re draw the code editor
@@ -357,6 +391,9 @@ $(document).ready(function () {
 
   window.codeMirrorEditor.on('change', handlePreview);
 
+  // Handle RTL wrapper checkbox change
+  $('#enableRTLWrapper').on('change', handlePreview);
+
   // Preview is now always visible in sidebar, no need for toggle
 
   // Handle form submission
@@ -368,7 +405,8 @@ $(document).ready(function () {
       "HtmlPart": window.codeMirrorEditor.getValue(),
       "SubjectPart": $('#templateSubject').val(),
       "TextPart": $('#templateText').val(),
-      "region": localStorage.getItem('region')
+      "region": localStorage.getItem('region'),
+      "enableRTLWrapper": $('#enableRTLWrapper').is(':checked')
     };
 
     // Update template

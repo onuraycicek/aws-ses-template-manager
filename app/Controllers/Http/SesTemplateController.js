@@ -30,13 +30,16 @@ class SesTemplateController {
     AWS.config.update({ region: requestBody.region });
     const ses = new AWS.SES();
 
-    // Wrap HTML content with proper HTML structure and RTL support
-    const wrappedHtml = this.translationService.wrapWithHTMLStructure(requestBody.HtmlPart);
+    // Wrap HTML content with proper HTML structure and RTL support if enabled
+    const enableRTLWrapper = requestBody.enableRTLWrapper === 'true' || requestBody.enableRTLWrapper === true;
+    const wrappedHtml = enableRTLWrapper
+      ? this.translationService.wrapWithHTMLStructure(requestBody.HtmlPart)
+      : requestBody.HtmlPart;
 
     const params = {
       Template: {
         TemplateName: requestBody.TemplateName, /* required */
-        HtmlPart: wrappedHtml, // Use wrapped HTML
+        HtmlPart: wrappedHtml, // Use wrapped HTML or original based on setting
         SubjectPart: requestBody.SubjectPart,
         TextPart: requestBody.TextPart
       }
@@ -169,13 +172,16 @@ class SesTemplateController {
     AWS.config.update({ region: requestBody.region });
     const ses = new AWS.SES();
 
-    // Wrap HTML content with proper HTML structure and RTL support
-    const wrappedHtml = this.translationService.wrapWithHTMLStructure(requestBody.HtmlPart);
+    // Wrap HTML content with proper HTML structure and RTL support if enabled
+    const enableRTLWrapper = requestBody.enableRTLWrapper === 'true' || requestBody.enableRTLWrapper === true;
+    const wrappedHtml = enableRTLWrapper
+      ? this.translationService.wrapWithHTMLStructure(requestBody.HtmlPart)
+      : requestBody.HtmlPart;
 
     const params = {
       Template: {
         TemplateName: requestBody.TemplateName, /* required */
-        HtmlPart: wrappedHtml, // Use wrapped HTML
+        HtmlPart: wrappedHtml, // Use wrapped HTML or original based on setting
         SubjectPart: requestBody.SubjectPart,
         TextPart: requestBody.TextPart
       }
